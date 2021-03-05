@@ -51,7 +51,10 @@ func main() {
 	}
 
 	// Extract new terms to context
-	context := i18n.Context{}
+	context := i18n.Context{
+		Terms: i18n.Terms{},
+	}
+
 	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
 		Regex: `(__|translate)\(:string\)`,
 		Use:   []int64{2},
