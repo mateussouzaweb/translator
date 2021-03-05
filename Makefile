@@ -1,5 +1,5 @@
 build:
-	go build -o bin/translator src/main.go
+	go build -o bin/translator cmd/main.go
 
 run:
-	go run src/main.go
+	go run cmd/main.go
