@@ -51,7 +51,7 @@ func Merge(context *Context, toContext *Context, removeNotFound bool) {
 
 	for term, translation := range context.Terms {
 		if _, ok := toContext.Terms[term]; !ok {
-			context.Terms[term] = translation
+			toContext.Terms[term] = translation
 		}
 	}
 
