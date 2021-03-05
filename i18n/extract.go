@@ -25,8 +25,8 @@ func Extract(content *string, context *Context, finder ExtractFinder) error {
 	}
 
 	matches := r.FindAllStringSubmatch(*content, -1)
-	translations := Translations{}
-	existing := context.Translations
+	terms := Terms{}
+	existing := context.Terms
 
 	for _, match := range matches {
 		for _, use := range finder.Use {
@@ -37,18 +37,18 @@ func Extract(content *string, context *Context, finder ExtractFinder) error {
 				continue
 			}
 
-			if _, ok := translations[term]; !ok {
+			if _, ok := terms[term]; !ok {
 				if translated, ok := existing[term]; ok {
-					translations[term] = translated
+					terms[term] = translated
 				} else {
-					translations[term] = ""
+					terms[term] = ""
 				}
 			}
 
 		}
 	}
 
-	context.Translations = translations
+	context.Terms = terms
 
 	return nil
 }

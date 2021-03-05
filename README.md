@@ -9,11 +9,11 @@ It was originally designed to use in conjunction with multi-language SPA project
 ## Features
 
 - Written in Go Language and provided as package module
-- Extracts translations from ``__()`` and ``translate()`` functions
+- Extracts terms from ``__()`` and ``translate()`` functions
 - Supports plurals from ``__p()`` and ``pluralize()`` functions
-- Reads translations from ``.js``, ``.html`` and ``.go`` files by default, but can include any other file extension
+- Reads terms from ``.js``, ``.html`` and ``.go`` files by default, but can include any other file extension
 - Keeps already translated terms on the destination file
-- Remove old translations that are not used anymore
+- Remove old terms that are not used anymore
 - Can be use to extract and translate Go projects on the fly
 - Just works!
 

@@ -6,19 +6,25 @@ import (
 	"strings"
 )
 
+// Placeholders struct
+type Placeholders = map[string]string
+
+// Terms struct
+type Terms = map[string]string
+
 // Context struct
 type Context struct {
-	Code         string
-	Alias        string
-	File         string
-	Translations Translations
+	Code  string
+	Alias string
+	File  string
+	Terms Terms
 }
 
 // Translate method return the translated term.
 // If the translation not exists, return the current term
 func (c *Context) Translate(term string) string {
 
-	if translated, ok := c.Translations[term]; ok {
+	if translated, ok := c.Terms[term]; ok {
 		return translated
 	}
 
@@ -57,15 +63,15 @@ func (c *Context) Load() error {
 		return err
 	}
 
-	err = json.Unmarshal([]byte(content), &c.Translations)
+	err = json.Unmarshal([]byte(content), &c.Terms)
 
 	return err
 }
 
-// Write translations into file
+// Write terms into file
 func (c *Context) Write() error {
 
-	content, err := json.MarshalIndent(c.Translations, "", "    ")
+	content, err := json.MarshalIndent(c.Terms, "", "    ")
 
 	if err != nil {
 		return err

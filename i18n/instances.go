@@ -16,7 +16,7 @@ func LoadContext(context *Context) error {
 	return nil
 }
 
-// GetContext return context language instance the create translations
+// GetContext return context instance
 func GetContext(code string, fallback string) *Context {
 
 	context := &Context{}
