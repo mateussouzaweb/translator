@@ -3,8 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"mateussouzaweb/translator/i18n"
 	"strings"
+
+	"github.com/mateussouzaweb/translator/i18n"
 )
 
 func main() {

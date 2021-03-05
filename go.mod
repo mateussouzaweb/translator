@@ -1,3 +1,3 @@
-module mateussouzaweb/translator
+module github.com/mateussouzaweb/translator
 
 go 1.16
