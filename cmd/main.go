@@ -11,10 +11,11 @@ import (
 func main() {
 
 	// Command line flags
-	source := flag.String("source", "", "Path to the source files")
-	extensions := flag.String("extensions", ".go,.html,.js", "Source file extensions. Comma separated")
-	destination := flag.String("destination", "", "Path to the destination JSON file")
 	version := flag.Bool("version", false, "Print program version")
+	source := flag.String("source", "", "Path to the source files")
+	destination := flag.String("destination", "", "Path to the destination JSON file")
+	extensions := flag.String("extensions", ".go,.html,.js", "Source file extensions. Comma separated")
+	remove := flag.Bool("remove", true, "Remove not found terms")
 
 	// Parse values
 	flag.Parse()
@@ -70,7 +71,7 @@ func main() {
 	}
 
 	// Merge and remove not found again terms
-	i18n.Merge(&context, &destinationContext, true)
+	i18n.Merge(&context, &destinationContext, *remove)
 
 	// Write new terms result
 	err = destinationContext.Write()
