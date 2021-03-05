@@ -24,12 +24,12 @@ func main() {
 		return
 	}
 
-	// Instantiate existing translations
-	context := i18n.Context{
+	// Instantiate existing terms from file
+	destinationContext := i18n.Context{
 		File: *destination,
 	}
 
-	err := context.Load()
+	err := destinationContext.Load()
 
 	if err != nil {
 		panic(err)
@@ -49,7 +49,8 @@ func main() {
 		panic(err)
 	}
 
-	// Extract new translations to context
+	// Extract new terms to context
+	context := i18n.Context{}
 	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
 		Regex: `(__|translate)\(:string\)`,
 		Use:   []int64{2},
@@ -68,8 +69,11 @@ func main() {
 		panic(err)
 	}
 
-	// Write new translations result
-	err = context.Write()
+	// Merge and remove not found again terms
+	i18n.Merge(&context, &destinationContext, true)
+
+	// Write new terms result
+	err = destinationContext.Write()
 
 	if err != nil {
 		panic(err)

@@ -11,8 +11,8 @@ type ExtractFinder struct {
 	Use   []int64
 }
 
-// Extract new translations terms from content
-func Extract(content *string, context *Context, finder ExtractFinder) error {
+// Extract new terms from content with finder rules
+func Extract(content *string, toContext *Context, finder ExtractFinder) error {
 
 	regex := finder.Regex
 	regex = strings.ReplaceAll(regex, `:string`, `\s?[\'\"](.+?)[\'\"]\s?`)
@@ -25,8 +25,6 @@ func Extract(content *string, context *Context, finder ExtractFinder) error {
 	}
 
 	matches := r.FindAllStringSubmatch(*content, -1)
-	terms := Terms{}
-	existing := context.Terms
 
 	for _, match := range matches {
 		for _, use := range finder.Use {
@@ -37,18 +35,32 @@ func Extract(content *string, context *Context, finder ExtractFinder) error {
 				continue
 			}
 
-			if _, ok := terms[term]; !ok {
-				if translated, ok := existing[term]; ok {
-					terms[term] = translated
-				} else {
-					terms[term] = ""
-				}
+			if _, ok := toContext.Terms[term]; !ok {
+				toContext.Terms[term] = ""
 			}
 
 		}
 	}
 
-	context.Terms = terms
-
 	return nil
+}
+
+// Merge terms from one context into another
+// Also can remove old terms from target context if not found on source context
+func Merge(context *Context, toContext *Context, removeNotFound bool) {
+
+	for term, translation := range context.Terms {
+		if _, ok := toContext.Terms[term]; !ok {
+			context.Terms[term] = translation
+		}
+	}
+
+	if removeNotFound {
+		for index := range toContext.Terms {
+			if _, ok := context.Terms[index]; !ok {
+				delete(toContext.Terms, index)
+			}
+		}
+	}
+
 }
