@@ -14,7 +14,7 @@ type ExtractFinder struct {
 // Extract new terms from content with finder rules
 func Extract(content *string, toContext *Context, finder ExtractFinder) error {
 
-	regex := finder.Regex
+	regex := "(?i)" + finder.Regex
 	regex = strings.ReplaceAll(regex, `:string`, `\s?[\'\"](.+?)[\'\"]\s?`)
 	regex = strings.ReplaceAll(regex, `:var`, `\s?[\'\"]?(.+?)[\'\"]?\s?`)
 
