@@ -21,7 +21,7 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		fmt.Println("Translator version 0.0.3")
+		fmt.Println("Translator version 0.0.4")
 		return
 	}
 
