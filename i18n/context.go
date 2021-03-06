@@ -57,7 +57,7 @@ func (c *Context) Replace(translation string, placeholders Placeholders) string 
 // Load translations from file
 func (c *Context) Load() error {
 
-	content, err := ReadFileContent(c.File)
+	content, err := ReadFile(c.File)
 
 	if err != nil {
 		return err

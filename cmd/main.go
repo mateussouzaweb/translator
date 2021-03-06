@@ -38,13 +38,13 @@ func main() {
 
 	// Retrieve source files content
 	extensionsList := strings.Split(*extensions, ",")
-	files, err := i18n.GetFiles(*source, extensionsList)
+	files, err := i18n.ExtractFiles(*source, extensionsList)
 
 	if err != nil {
 		panic(err)
 	}
 
-	content, err := i18n.ReadContent(files)
+	content, err := i18n.ReadFiles(files)
 
 	if err != nil {
 		panic(err)
