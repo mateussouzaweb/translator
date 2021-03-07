@@ -9,8 +9,8 @@ import (
 
 // ExtractFinder struct
 type ExtractFinder struct {
-	Regex string
-	Use   []int64
+	Format string
+	Use    []int64
 }
 
 // ExtractFiles retrieve files from source path
@@ -46,12 +46,8 @@ func ExtractFiles(root string, extensions []string) ([]string, error) {
 	return files, err
 }
 
-// Extract new terms from content with finder rules
-func Extract(content *string, toContext *Context, finder ExtractFinder) error {
-
-	regex := "(?i)" + finder.Regex
-	regex = strings.ReplaceAll(regex, `:string`, `\s?[\'\"](.+?)[\'\"]\s?`)
-	regex = strings.ReplaceAll(regex, `:var`, `\s?[\'\"]?(.+?)[\'\"]?\s?`)
+// ExtractTerms from regex
+func ExtractTerms(regex string, use []int64, content *string, toContext *Context) error {
 
 	r, err := regexp.Compile(regex)
 
@@ -62,7 +58,7 @@ func Extract(content *string, toContext *Context, finder ExtractFinder) error {
 	matches := r.FindAllStringSubmatch(*content, -1)
 
 	for _, match := range matches {
-		for _, use := range finder.Use {
+		for _, use := range use {
 
 			term := match[use]
 
@@ -78,6 +74,28 @@ func Extract(content *string, toContext *Context, finder ExtractFinder) error {
 	}
 
 	return nil
+}
+
+// Extract new terms from content with finder rules
+func Extract(content *string, toContext *Context, finder ExtractFinder) error {
+
+	regex := "(?i)" + finder.Format
+	regex = strings.ReplaceAll(regex, `:string`, `\s?\'(.+?)\'\s?`)
+	regex = strings.ReplaceAll(regex, `:var`, `\s?\'?(.+?)\'?\s?`)
+
+	err := ExtractTerms(regex, finder.Use, content, toContext)
+
+	if err != nil {
+		return err
+	}
+
+	regex = "(?i)" + finder.Format
+	regex = strings.ReplaceAll(regex, `:string`, `\s?\"(.+?)\"\s?`)
+	regex = strings.ReplaceAll(regex, `:var`, `\s?\"?(.+?)\"?\s?`)
+
+	err = ExtractTerms(regex, finder.Use, content, toContext)
+
+	return err
 }
 
 // Merge terms from one context into another

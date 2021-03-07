@@ -56,8 +56,8 @@ func main() {
 	}
 
 	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
-		Regex: `(__|translate)\(:string\)`,
-		Use:   []int64{2},
+		Format: `(__|translate)\(:string\)`,
+		Use:    []int64{2},
 	})
 
 	if err != nil {
@@ -65,8 +65,8 @@ func main() {
 	}
 
 	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
-		Regex: `(__p|pluralize)\(:var,:string,:string(,:string)?\)`,
-		Use:   []int64{3, 4, 5},
+		Format: `(__p|pluralize)\(:var,:string,:string(,:string)?\)`,
+		Use:    []int64{3, 4, 5},
 	})
 
 	if err != nil {
