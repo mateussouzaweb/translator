@@ -65,6 +65,15 @@ func main() {
 	}
 
 	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
+		Format: `(translate\s):string`,
+		Use:    []int64{2},
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
 		Format: `(__p|pluralize)\(:var,:string,:string(,:string)?\)`,
 		Use:    []int64{3, 4, 5},
 	})
