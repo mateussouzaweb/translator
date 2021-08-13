@@ -10,6 +10,14 @@ import (
 
 func main() {
 
+	var patterns []string
+
+	patterns = append(patterns,
+		`(?:__|translate)\(:term\)`,
+		`(?:translate\s):term`,
+		`(?:__p|pluralize)\(:variable,:term,:term(,:term)?\)`,
+	)
+
 	// Command line flags
 	version := flag.Bool("version", false, "Print program version")
 	source := flag.String("source", "", "Path to the source files")
@@ -55,31 +63,14 @@ func main() {
 		Terms: i18n.Terms{},
 	}
 
-	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
-		Format: `(__|translate)\(:string\)`,
-		Use:    []int64{2},
-	})
+	for _, pattern := range patterns {
 
-	if err != nil {
-		panic(err)
-	}
+		err = i18n.Extract(&content, &context, pattern)
 
-	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
-		Format: `(translate\s):string`,
-		Use:    []int64{2},
-	})
+		if err != nil {
+			panic(err)
+		}
 
-	if err != nil {
-		panic(err)
-	}
-
-	err = i18n.Extract(&content, &context, i18n.ExtractFinder{
-		Format: `(__p|pluralize)\(:var,:string,:string(,:string)?\)`,
-		Use:    []int64{3, 4, 5},
-	})
-
-	if err != nil {
-		panic(err)
 	}
 
 	// Merge and remove not found again terms

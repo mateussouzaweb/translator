@@ -7,12 +7,6 @@ import (
 	"strings"
 )
 
-// ExtractFinder struct
-type ExtractFinder struct {
-	Format string
-	Use    []int64
-}
-
 // ExtractFiles retrieve files from source path
 func ExtractFiles(root string, extensions []string) ([]string, error) {
 
@@ -46,26 +40,17 @@ func ExtractFiles(root string, extensions []string) ([]string, error) {
 	return files, err
 }
 
-// ExtractTerms from regex
-func ExtractTerms(regex string, use []int64, content *string, toContext *Context) error {
+// ExtractTerms from final regex
+func ExtractTerms(content *string, toContext *Context, regex *regexp.Regexp) error {
 
-	r, err := regexp.Compile(regex)
-
-	if err != nil {
-		return err
-	}
-
-	matches := r.FindAllStringSubmatch(*content, -1)
+	matches := regex.FindAllStringSubmatch(*content, -1)
 
 	for _, match := range matches {
-		for _, use := range use {
+		for index, term := range match {
 
-			term := match[use]
-
-			if term == "" {
+			if index == 0 || term == "" {
 				continue
 			}
-
 			if _, ok := toContext.Terms[term]; !ok {
 				toContext.Terms[term] = ""
 			}
@@ -77,23 +62,33 @@ func ExtractTerms(regex string, use []int64, content *string, toContext *Context
 }
 
 // Extract new terms from content with finder rules
-func Extract(content *string, toContext *Context, finder ExtractFinder) error {
+func Extract(content *string, toContext *Context, pattern string) error {
 
-	regex := "(?i)" + finder.Format
-	regex = strings.ReplaceAll(regex, `:string`, `\s?\'(.+?)\'\s?`)
-	regex = strings.ReplaceAll(regex, `:var`, `\s?\'?(.+?)\'?\s?`)
-
-	err := ExtractTerms(regex, finder.Use, content, toContext)
+	regex := "(?i)" + pattern
+	regex = strings.ReplaceAll(regex, `:term`, `\s?\'(.+?)\'\s?`)
+	regex = strings.ReplaceAll(regex, `:variable`, `\s?\'?(?:.+?)\'?\s?`)
+	compiled, err := regexp.Compile(regex)
 
 	if err != nil {
 		return err
 	}
 
-	regex = "(?i)" + finder.Format
-	regex = strings.ReplaceAll(regex, `:string`, `\s?\"(.+?)\"\s?`)
-	regex = strings.ReplaceAll(regex, `:var`, `\s?\"?(.+?)\"?\s?`)
+	err = ExtractTerms(content, toContext, compiled)
 
-	err = ExtractTerms(regex, finder.Use, content, toContext)
+	if err != nil {
+		return err
+	}
+
+	regex = "(?i)" + pattern
+	regex = strings.ReplaceAll(regex, `:term`, `\s?\"(.+?)\"\s?`)
+	regex = strings.ReplaceAll(regex, `:variable`, `\s?\"?(?:.+?)\"?\s?`)
+	compiled, err = regexp.Compile(regex)
+
+	if err != nil {
+		return err
+	}
+
+	err = ExtractTerms(content, toContext, compiled)
 
 	return err
 }
