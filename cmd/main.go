@@ -19,11 +19,42 @@ func main() {
 	)
 
 	// Command line flags
-	version := flag.Bool("version", false, "Print program version")
-	source := flag.String("source", "", "Path to the source files")
-	destination := flag.String("destination", "", "Path to the destination JSON file")
-	extensions := flag.String("extensions", ".go,.html,.js", "Source file extensions. Comma separated")
-	remove := flag.Bool("remove", true, "Remove not found terms")
+	version := flag.Bool(
+		"version",
+		false,
+		"Print program version",
+	)
+
+	source := flag.String(
+		"source",
+		"",
+		"Path to the source files",
+	)
+
+	destination := flag.String(
+		"destination",
+		"",
+		"Path to the destination JSON file",
+	)
+
+	extensions := flag.String(
+		"extensions",
+		".go,.html,.js", "Source file extensions. Comma separated",
+	)
+
+	remove := flag.Bool(
+		"remove",
+		true,
+		"Remove not found terms",
+	)
+
+	flag.Func(
+		"add-pattern",
+		"Declare additional regex pattern to extract translations.\nUse :term to represent translatable terms and :variable to represent non translatable variables.\nIf you use regex group, make sure to use non capturing group, as every capturing group is considered a translation term",
+		func(value string) error {
+			patterns = append(patterns, value)
+			return nil
+		})
 
 	// Parse values
 	flag.Parse()
