@@ -4,7 +4,7 @@
 
 It was originally designed to use in conjunction with multi-language SPA projects but is extensible to any kind of project that you are developing, whatever the source code language - if can reads JSON, will works.
 
----
+----
 
 ## Features
 
@@ -18,14 +18,16 @@ It was originally designed to use in conjunction with multi-language SPA project
 - Can be use to extract and translate Go projects on the fly
 - Just works!
 
----
+----
 
 ## CLI - Installation and Usage
 
 To install, just download the most recent binary file:
 
 ```bash
-sudo wget https://raw.githubusercontent.com/mateussouzaweb/translator/master/bin/translator -O /usr/local/bin/translator && sudo chmod +x /usr/local/bin/translator
+REPOSITORY="https://github.com/mateussouzaweb/translator/releases/download/latest"
+sudo wget $REPOSITORY/translator -O /usr/local/bin/translator
+sudo chmod +x /usr/local/bin/translator
 ```
 
 To check command flags use:
@@ -44,7 +46,7 @@ translator \
 
 Now translate the terms by editing the JSON file. Enjoy!
 
----
+----
 
 ## Usage In Go Projects
 
