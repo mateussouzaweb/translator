@@ -60,7 +60,7 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		fmt.Println("Translator version 0.0.7")
+		fmt.Println("Translator version 0.0.8")
 		return
 	}
 
