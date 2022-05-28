@@ -39,7 +39,7 @@ func main() {
 
 	extensions := flag.String(
 		"extensions",
-		".go,.html,.js", "Source file extensions. Comma separated",
+		".go,.html,.js,.jsx,.ts,.tsx,.mjs,.mts", "Source file extensions. Comma separated",
 	)
 
 	remove := flag.Bool(
