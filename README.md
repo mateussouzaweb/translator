@@ -12,7 +12,8 @@ It was originally designed to use in conjunction with multi-language SPA project
 - Extracts terms from ``__()`` and ``translate()`` functions
 - Supports plurals from ``__p()`` and ``pluralize()`` functions
 - Supports terms extraction from custom patterns
-- Reads terms from ``.js``, ``.html`` and ``.go`` files by default, but can include any other file extension
+- Reads terms from the following files by default: ``.html``, ``.js``, ``.jsx``, ``.ts`` ``.tsx``, ``.mjs``, ``.mts`` and ``.go``
+- You can include any other file extension to extract translations
 - Keeps already translated terms on the destination file
 - Remove old terms that are not used anymore
 - Can be use to extract and translate Go projects on the fly
