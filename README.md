@@ -55,11 +55,10 @@ You can run translator directly from a Docker container image. Simply pull the p
 # See help
 docker run --rm ghcr.io/mateussouzaweb/translator:latest --help
 
-# Run current folder on statiq
+# Run translator
 docker run --rm -v "$PWD:/app" \
   ghcr.io/mateussouzaweb/translator:latest \
-    --source /app \
-    --destination /app/translations.json
+    --source /app --destination /app/translations.json
 ```
 
 ---
