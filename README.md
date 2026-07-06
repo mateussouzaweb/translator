@@ -40,14 +40,29 @@ translator --help
 To translate a project, run:
 
 ```bash
-translator \
-    --source /path/to/source/ \
-    --destination /path/to/destination/json/file.json
+translator --source ./ --destination ./translations.json
 ```
 
 Now translate the terms by editing the JSON file. Enjoy!
 
 ----
+
+## Usage with Docker
+
+You can run translator directly from a Docker container image. Simply pull the published image from the registry:
+
+```bash
+# See help
+docker run --rm ghcr.io/mateussouzaweb/translator:latest --help
+
+# Run current folder on statiq
+docker run --rm -v "$PWD:/app" \
+  ghcr.io/mateussouzaweb/translator:latest \
+    --source /app \
+    --destination /app/translations.json
+```
+
+---
 
 ## Usage In Go Projects
 
