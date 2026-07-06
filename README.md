@@ -58,7 +58,7 @@ docker run --rm ghcr.io/mateussouzaweb/translator:latest --help
 # Run translator
 docker run --rm -v "$PWD:/app" \
   ghcr.io/mateussouzaweb/translator:latest \
-    --source /app --destination /app/translations.json
+  --source /app --destination /app/translations.json
 ```
 
 ---
